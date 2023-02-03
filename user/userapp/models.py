@@ -10,7 +10,7 @@ class CustomUserManager(UserManager):
 
     def _create_user(self, email, password, **extra_fields):
         email = self.normalize_email(email)
-        user = CustomUser(email=email, username = random.choices(string.ascii_lowercase),**extra_fields)
+        user = CustomUser(email=email, username = ''.join(random.choice(string.ascii_lowercase) for i in range(8)),**extra_fields)
         user.password = make_password(password)
         user.save(using=self._db)
         return user

@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'userapp',
     'drf_yasg',
     'rest_framework_simplejwt',
+    'corsheaders',
+    
 ]
 
 MIDDLEWARE = [
@@ -53,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'user.urls'
@@ -140,20 +143,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#         'rest_framework.authentication.BasicAuthentication',
-#         'rest_framework.authentication.TokenAuthentication',
-#     ],
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.IsAuthenticated'
-#     ],
-#     'DEFAULT_RENDERER_CLASSES': [
-#         'rest_framework.renderers.JSONRenderer',
-#         'rest_framework.renderers.BrowsableAPIRenderer',
-#     ]
-# }
 
 AUTH_USER_MODEL = 'userapp.CustomUser'
 
@@ -177,3 +166,9 @@ EMAIL_HOST_USER = "roshan.chavhan@thinkitive.com"
 EMAIL_HOST_PASSWORD = "9823550456"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = [
+     'http://localhost:3000'
+]

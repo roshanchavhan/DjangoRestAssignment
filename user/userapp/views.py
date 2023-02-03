@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from .models import CustomUser
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ObjectDoesNotExist
-from rest_framework_simplejwt.authentication import JWTAuthentication
+# from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.core.mail import send_mail
 
 # Create your views here.
@@ -19,30 +19,31 @@ class RegisterAPIView(GenericAPIView):
 
    
     def post(self, request):
-        try:
-            serializer = self.serializer_class(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                email = request.data.get('email')
-                send_mail(
-                subject='Registration Verification',
-                message= 'Hello, You Are Registered Successfully',
-                from_email= 'roshan.chavhan@thinkitive.com',
-                recipient_list= [email],
-                fail_silently=False,
-                )
-            
-            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
-        except Exception as e:
-            print(e)
-            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # print("requset data",request.data)
+       
+        serializer = RegisterSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            email = request.data.get('email')
+            send_mail(
+            subject='Registration Verification',
+            message= 'Hello, You Are Registered Successfully',
+            from_email= 'roshan.chavhan@thinkitive.com',
+            recipient_list= [email],
+            fail_silently=False,
+            )
+        
+            return response.Response({"message": "Successfully Registred", "success": True}, status=status.HTTP_201_CREATED)
+        else:
+            return response.Response({"message": serializer.errors['email'][0], "success": False}, status=status.HTTP_208_ALREADY_REPORTED)
 
 
 class LogInAPIView(GenericAPIView):
     serializer_class = LogInSerializer
 
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def post(self, request):
         email = request.data.get('email')
